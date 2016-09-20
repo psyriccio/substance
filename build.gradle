@@ -1,0 +1,85 @@
+buildscript {
+  repositories {
+    jcenter()
+    maven {
+        url "https://maven.eveoh.nl/content/repositories/releases"
+    }
+  }
+
+  dependencies {
+    classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+    classpath "nl.eveoh:gradle-aspectj:1.6"
+  }
+
+}
+
+plugins {
+  id "com.github.johnrengelman.shadow" version "1.2.3"
+}
+
+project.ext {
+    aspectjVersion = '1.8.9'
+}
+
+apply plugin: 'java'
+apply plugin: 'aspectj'
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+repositories {
+    mavenCentral()
+    maven {
+    	url 'https://raw.github.com/Ekito/maven-repo/master/releases'
+    }
+}
+
+sourceCompatibility = 1.8
+version = 'latest-SNAPSHOT'
+
+ext.mainClass = ''
+mainClassName = ''
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'substance',
+                   'Implementation-Version': version,
+                   'Main-Class': ''
+    }
+}
+
+shadowJar {
+   dependencies {
+      exclude(dependency('com.google.android:android:.*'))
+      exclude(dependency('org.eclipse.swt.win32.win32:.*'))
+    }
+}
+
+build {
+  dependsOn += shadowJar
+}
+
+dependencies {
+  compile fileTree(dir: 'lib').matching { include '*.jar'}
+  compile fileTree(dir: 'lib.test').matching { include '*.jar'}
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+        resources {
+            srcDir 'src'
+            include '**/*.png'
+            include '**/*.gif'
+            include '**/*.ttf'
+            include '**/*.xml'
+            include '**/*.ftl'
+            include '**/*.properties'
+            include '**/*.license'
+            include '**/*.colorschemes'
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
+}

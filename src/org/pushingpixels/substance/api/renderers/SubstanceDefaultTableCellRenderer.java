@@ -1,31 +1,31 @@
 /*
  * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- *  o Redistributions of source code must retain the above copyright notice, 
- *    this list of conditions and the following disclaimer. 
- *     
- *  o Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
- *    and/or other materials provided with the distribution. 
- *     
- *  o Neither the name of Substance Kirill Grouchnikov nor the names of 
- *    its contributors may be used to endorse or promote products derived 
- *    from this software without specific prior written permission. 
- *     
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ *
+ *  o Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ *  o Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ *  o Neither the name of Substance Kirill Grouchnikov nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.pushingpixels.substance.api.renderers;
 
@@ -51,14 +51,14 @@ import org.pushingpixels.substance.internal.utils.border.SubstanceTableCellBorde
 
 /**
  * Default renderer for table cells.
- * 
+ *
  * @author Kirill Grouchnikov
  */
 @SubstanceRenderer
 public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer {
 	/**
 	 * Renderer for boolean columns.
-	 * 
+	 *
 	 * @author Kirill Grouchnikov
 	 */
 	@SubstanceRenderer
@@ -80,7 +80,7 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see
 		 * javax.swing.table.TableCellRenderer#getTableCellRendererComponent
 		 * (javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
@@ -115,8 +115,8 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 
 				TableCellId cellFocusId = new TableCellId(row, column);
 
-				StateTransitionTracker stateTransitionTracker = ui
-						.getStateTransitionTracker(cellFocusId);
+				StateTransitionTracker stateTransitionTracker = null;//ui
+						//.getStateTransitionTracker(cellFocusId);
 				if (hasFocus || (stateTransitionTracker != null)) {
 					SubstanceTableCellBorder border = new SubstanceTableCellBorder(
 							new Insets(0, 0, 0, 0), ui, cellFocusId);
@@ -144,7 +144,7 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see javax.swing.JComponent#paint(java.awt.Graphics)
 		 */
 		@Override
@@ -154,7 +154,7 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
 		 */
 		@Override
@@ -174,7 +174,7 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 
 	/**
 	 * Renderer for icon columns.
-	 * 
+	 *
 	 * @author Kirill Grouchnikov
 	 */
 	public static class IconRenderer extends SubstanceDefaultTableCellRenderer {
@@ -195,7 +195,7 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 
 	/**
 	 * Renderer for number columns.
-	 * 
+	 *
 	 * @author Kirill Grouchnikov
 	 */
 	public static class NumberRenderer extends
@@ -211,7 +211,7 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 
 	/**
 	 * Renderer for double columns.
-	 * 
+	 *
 	 * @author Kirill Grouchnikov
 	 */
 	public static class DoubleRenderer extends NumberRenderer {
@@ -238,7 +238,7 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 
 	/**
 	 * Renderer for date columns.
-	 * 
+	 *
 	 * @author Kirill Grouchnikov
 	 */
 	public static class DateRenderer extends SubstanceDefaultTableCellRenderer {
@@ -272,7 +272,7 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax
 	 * .swing.JTable, java.lang.Object, boolean, boolean, int, int)
@@ -298,8 +298,8 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 
 		TableCellId cellId = new TableCellId(row, column);
 
-		StateTransitionTracker.ModelStateInfo modelStateInfo = ui
-				.getModelStateInfo(cellId);
+		//StateTransitionTracker.ModelStateInfo modelStateInfo = ui
+		//		.getModelStateInfo(cellId);
 		ComponentState currState = ui.getCellState(cellId);
 		// special case for drop location
 		JTable.DropLocation dropLocation = table.getDropLocation();
@@ -308,10 +308,10 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 				&& !dropLocation.isInsertColumn()
 				&& dropLocation.getRow() == row && dropLocation.getColumn() == column);
 
-		if (!isDropLocation && (modelStateInfo != null)) {
+		if (!isDropLocation && (false/*modelStateInfo != null*/)) {
 			if (ui.hasRolloverAnimations() || ui.hasSelectionAnimations()) {
-				Map<ComponentState, StateContributionInfo> activeStates = modelStateInfo
-						.getStateContributionMap();
+				Map<ComponentState, StateContributionInfo> activeStates = null;//modelStateInfo
+						//.getStateContributionMap();
 				SubstanceColorScheme colorScheme = getColorSchemeForState(
 						table, ui, currState);
 				if (currState.isDisabled() || (activeStates == null)
@@ -322,18 +322,18 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 					float aggrRed = 0;
 					float aggrGreen = 0;
 					float aggrBlue = 0;
-					for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : modelStateInfo
-							.getStateContributionMap().entrySet()) {
-						ComponentState activeState = activeEntry.getKey();
-						SubstanceColorScheme scheme = getColorSchemeForState(
-								table, ui, activeState);
-						Color schemeFg = scheme.getForegroundColor();
-						float contribution = activeEntry.getValue()
-								.getContribution();
-						aggrRed += schemeFg.getRed() * contribution;
-						aggrGreen += schemeFg.getGreen() * contribution;
-						aggrBlue += schemeFg.getBlue() * contribution;
-					}
+					// for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : modelStateInfo
+					// 		.getStateContributionMap().entrySet()) {
+					// 	ComponentState activeState = activeEntry.getKey();
+					// 	SubstanceColorScheme scheme = getColorSchemeForState(
+					// 			table, ui, activeState);
+					// 	Color schemeFg = scheme.getForegroundColor();
+					// 	float contribution = activeEntry.getValue()
+					// 			.getContribution();
+					// 	aggrRed += schemeFg.getRed() * contribution;
+					// 	aggrGreen += schemeFg.getGreen() * contribution;
+					// 	aggrBlue += schemeFg.getBlue() * contribution;
+					// }
 					super.setForeground(new ColorUIResource(new Color(
 							(int) aggrRed, (int) aggrGreen, (int) aggrBlue)));
 				}
@@ -361,8 +361,8 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 
 		TableCellId cellFocusId = new TableCellId(row, column);
 
-		StateTransitionTracker focusStateTransitionTracker = ui
-				.getStateTransitionTracker(cellFocusId);
+		StateTransitionTracker focusStateTransitionTracker = null;//ui
+				//.getStateTransitionTracker(cellFocusId);
 
 		Insets regInsets = ui.getCellRendererInsets();
 		if (hasFocus || (focusStateTransitionTracker != null)) {
@@ -419,7 +419,7 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
 	 */
 	@Override
@@ -429,7 +429,7 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
 	 */
 	@Override
