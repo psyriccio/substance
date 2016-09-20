@@ -35,13 +35,13 @@ repositories {
 sourceCompatibility = 1.8
 version = 'latest-SNAPSHOT'
 
-ext.mainClass = ''
-mainClassName = ''
+ext.mainClass = 'test.TreeTest'
+mainClassName = 'test.TreeTest'
 jar {
     manifest {
         attributes 'Implementation-Title': 'substance',
                    'Implementation-Version': version,
-                   'Main-Class': ''
+                   'Main-Class': 'test.TreeTest'
     }
 }
 

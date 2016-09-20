@@ -66,7 +66,7 @@ import org.pushingpixels.trident.callback.UIThreadTimelineCallbackAdapter;
  * painting stack has been copied from {@link BasicTableUI} since the methods
  * are private. The animation effects are implemented in the
  * {@link #paintCell(Graphics, Rectangle, int, int)}.
- * 
+ *
  * @author Kirill Grouchnikov
  */
 public class SubstanceTableUI extends BasicTableUI implements
@@ -129,9 +129,11 @@ public class SubstanceTableUI extends BasicTableUI implements
 	 */
 	private Insets cellRendererInsets;
 
+        private final boolean transitionAnimEnabled;
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
 	 */
 	public static ComponentUI createUI(JComponent comp) {
@@ -144,6 +146,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 	 */
 	public SubstanceTableUI() {
 		super();
+                this.transitionAnimEnabled = SubstanceOptions.isTransitionAnimOn(this.getClass());
 		this.selectedIndices = new HashMap<TableCellId, Object>();
 		this.rolledOverIndices = new HashSet<TableCellId>();
 		this.stateTransitionMultiTracker = new StateTransitionMultiTracker<TableCellId>();
@@ -181,7 +184,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see javax.swing.plaf.basic.BasicTableUI#installDefaults()
 	 */
 	@Override
@@ -294,7 +297,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 	/**
 	 * Installs Substance-specific renderers for column classes that don't have
 	 * application-specific renderers installed by the user code.
-	 * 
+	 *
 	 * @param clazz
 	 *            Column class.
 	 * @param renderer
@@ -316,7 +319,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 	/**
 	 * Installs Substance-specific renderers for column classes that don't have
 	 * application-specific renderers installed by the user code.
-	 * 
+	 *
 	 * @param clazz
 	 *            Column class.
 	 * @param editor
@@ -336,7 +339,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see javax.swing.plaf.basic.BasicTableUI#uninstallDefaults()
 	 */
 	@Override
@@ -365,7 +368,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 	/**
 	 * Uninstalls default Substance renderers that were installed in
 	 * {@link #installRendererIfNecessary(Class, TableCellRenderer)}.
-	 * 
+	 *
 	 * @param clazz
 	 *            Column class.
 	 * @param renderer
@@ -387,7 +390,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 	/**
 	 * Uninstalls default Substance editors that were installed in
 	 * {@link #installEditorIfNecessary(Class, TableCellEditor)}.
-	 * 
+	 *
 	 * @param clazz
 	 *            Column class.
 	 * @param editor
@@ -408,7 +411,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see javax.swing.plaf.basic.BasicTableUI#installListeners()
 	 */
 	@Override
@@ -599,9 +602,12 @@ public class SubstanceTableUI extends BasicTableUI implements
 		}
 
 		// Add listener for the transition animation
-		this.substanceFadeRolloverListener = new RolloverFadeListener();
-		this.table.addMouseMotionListener(this.substanceFadeRolloverListener);
-		this.table.addMouseListener(this.substanceFadeRolloverListener);
+                // Implementation of transition animation exclude option
+                if(transitionAnimEnabled) {
+                    this.substanceFadeRolloverListener = new RolloverFadeListener();
+                    this.table.addMouseMotionListener(this.substanceFadeRolloverListener);
+                    this.table.addMouseListener(this.substanceFadeRolloverListener);
+                }
 
 		// fix for issue 481 - tracking focus events on the table
 		this.substanceFocusListener = new FocusListener() {
@@ -646,7 +652,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see javax.swing.plaf.basic.BasicTableUI#uninstallListeners()
 	 */
 	@Override
@@ -1455,7 +1461,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/**
 	 * Repaints a single cell during the fade animation cycle.
-	 * 
+	 *
 	 * @author Kirill Grouchnikov
 	 */
 	protected class CellRepaintCallback extends UIThreadTimelineCallbackAdapter {
@@ -1476,7 +1482,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 		/**
 		 * Creates a new animation repaint callback.
-		 * 
+		 *
 		 * @param table
 		 *            Associated table.
 		 * @param rowIndex
@@ -1534,7 +1540,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/**
 	 * Repaints a single row during the fade animation cycle.
-	 * 
+	 *
 	 * @author Kirill Grouchnikov
 	 */
 	protected class RowRepaintCallback extends UIThreadTimelineCallbackAdapter {
@@ -1550,7 +1556,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 		/**
 		 * Creates a new animation repaint callback.
-		 * 
+		 *
 		 * @param table
 		 *            Associated table.
 		 * @param rowIndex
@@ -1620,7 +1626,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/**
 	 * Repaints a single column during the fade animation cycle.
-	 * 
+	 *
 	 * @author Kirill Grouchnikov
 	 */
 	protected class ColumnRepaintCallback extends
@@ -1637,7 +1643,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 		/**
 		 * Creates a new animation repaint callback.
-		 * 
+		 *
 		 * @param table
 		 *            Associated table.
 		 * @param columnIndex
@@ -1708,7 +1714,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/**
 	 * ID of a single table cell.
-	 * 
+	 *
 	 * @author Kirill Grouchnikov
 	 */
 	public static class TableCellId implements Comparable<TableCellId> {
@@ -1724,7 +1730,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 		/**
 		 * Creates a new cell ID.
-		 * 
+		 *
 		 * @param row
 		 *            Cell row.
 		 * @param column
@@ -1737,7 +1743,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see java.lang.Comparable#compareTo(java.lang.Object)
 		 */
 		@Override
@@ -1749,7 +1755,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see java.lang.Object#equals(java.lang.Object)
 		 */
 		@Override
@@ -1762,7 +1768,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see java.lang.Object#hashCode()
 		 */
 		@Override
@@ -1773,7 +1779,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see java.lang.Object#toString()
 		 */
 		@Override
@@ -1784,7 +1790,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/**
 	 * State listener for tracking the selection changes.
-	 * 
+	 *
 	 * @author Kirill Grouchnikov
 	 */
 	protected class TableStateListener implements ListSelectionListener,
@@ -1817,7 +1823,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see
 		 * javax.swing.event.ListSelectionListener#valueChanged(javax.swing.
 		 * event.ListSelectionEvent)
@@ -1845,7 +1851,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see
 		 * javax.swing.event.TableModelListener#tableChanged(javax.swing.event
 		 * .TableModelEvent)
@@ -1888,7 +1894,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/**
 	 * Listener for fade animations on table rollovers.
-	 * 
+	 *
 	 * @author Kirill Grouchnikov
 	 */
 	private class RolloverFadeListener implements MouseListener,
@@ -1956,7 +1962,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 		/**
 		 * Handles various mouse move events and initiates the fade animation if
 		 * necessary.
-		 * 
+		 *
 		 * @param e
 		 *            Mouse event.
 		 */
@@ -2028,7 +2034,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 		/**
 		 * Handles various mouse move events and initiates the fade animation if
 		 * necessary.
-		 * 
+		 *
 		 * @param e
 		 *            Mouse event.
 		 */
@@ -2131,7 +2137,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/**
 	 * Returns a comparable ID for the specified location.
-	 * 
+	 *
 	 * @param row
 	 *            Row index.
 	 * @param column
@@ -2148,7 +2154,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/**
 	 * Synchronizes the current selection state.
-	 * 
+	 *
 	 * @param e
 	 *            Selection event.
 	 */
@@ -2336,7 +2342,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/**
 	 * Returns the current state for the specified cell.
-	 * 
+	 *
 	 * @param cellIndex
 	 *            Cell index.
 	 * @return The current state for the specified cell.
@@ -2374,7 +2380,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/**
 	 * Returns the current state for the specified cell.
-	 * 
+	 *
 	 * @param cellId
 	 *            Cell index.
 	 * @return The current state for the specified cell.
@@ -2394,7 +2400,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/**
 	 * Checks whether the table has animations.
-	 * 
+	 *
 	 * @return <code>true</code> if the table has animations, <code>false</code>
 	 *         otherwise.
 	 */
@@ -2424,7 +2430,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/**
 	 * Checks whether the table has selection animations.
-	 * 
+	 *
 	 * @return <code>true</code> if the table has selection animations,
 	 *         <code>false</code> otherwise.
 	 */
@@ -2436,7 +2442,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/**
 	 * Checks whether the table has rollover animations.
-	 * 
+	 *
 	 * @return <code>true</code> if the table has rollover animations,
 	 *         <code>false</code> otherwise.
 	 */
@@ -2448,7 +2454,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/**
 	 * Returns the index of the rollover column.
-	 * 
+	 *
 	 * @return The index of the rollover column.
 	 */
 	public int getRolloverColumnIndex() {
@@ -2457,7 +2463,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/**
 	 * Returns indication whether the specified cell has focus.
-	 * 
+	 *
 	 * @param row
 	 *            Cell row index.
 	 * @param column
@@ -2472,7 +2478,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
 	 * javax.swing.JComponent)
 	 */
@@ -2490,7 +2496,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 	/**
 	 * Returns the cell renderer insets of this table. Is for internal use only.
-	 * 
+	 *
 	 * @return The cell renderer insets of this table.
 	 */
 	public Insets getCellRendererInsets() {

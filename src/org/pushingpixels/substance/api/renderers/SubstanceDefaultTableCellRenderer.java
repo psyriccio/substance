@@ -90,7 +90,7 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 				int column) {
 			if (isSelected) {
 				this.setForeground(table.getSelectionForeground());
-				// super.setBackground(table.getSelectionBackground());
+				 super.setBackground(table.getSelectionBackground());
 			} else {
 				this.setForeground(table.getForeground());
 			}
@@ -115,8 +115,8 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 
 				TableCellId cellFocusId = new TableCellId(row, column);
 
-				StateTransitionTracker stateTransitionTracker = null;//ui
-						//.getStateTransitionTracker(cellFocusId);
+				StateTransitionTracker stateTransitionTracker = ui
+						.getStateTransitionTracker(cellFocusId);
 				if (hasFocus || (stateTransitionTracker != null)) {
 					SubstanceTableCellBorder border = new SubstanceTableCellBorder(
 							new Insets(0, 0, 0, 0), ui, cellFocusId);
@@ -298,20 +298,20 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 
 		TableCellId cellId = new TableCellId(row, column);
 
-		//StateTransitionTracker.ModelStateInfo modelStateInfo = ui
-		//		.getModelStateInfo(cellId);
+		StateTransitionTracker.ModelStateInfo modelStateInfo = ui
+				.getModelStateInfo(cellId);
 		ComponentState currState = ui.getCellState(cellId);
-		// special case for drop location
+                // special case for drop location
 		JTable.DropLocation dropLocation = table.getDropLocation();
 		boolean isDropLocation = (dropLocation != null
 				&& !dropLocation.isInsertRow()
 				&& !dropLocation.isInsertColumn()
 				&& dropLocation.getRow() == row && dropLocation.getColumn() == column);
 
-		if (!isDropLocation && (false/*modelStateInfo != null*/)) {
+		if (!isDropLocation && (modelStateInfo != null)) {
 			if (ui.hasRolloverAnimations() || ui.hasSelectionAnimations()) {
-				Map<ComponentState, StateContributionInfo> activeStates = null;//modelStateInfo
-						//.getStateContributionMap();
+				Map<ComponentState, StateContributionInfo> activeStates = modelStateInfo
+						.getStateContributionMap();
 				SubstanceColorScheme colorScheme = getColorSchemeForState(
 						table, ui, currState);
 				if (currState.isDisabled() || (activeStates == null)
@@ -322,18 +322,18 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 					float aggrRed = 0;
 					float aggrGreen = 0;
 					float aggrBlue = 0;
-					// for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : modelStateInfo
-					// 		.getStateContributionMap().entrySet()) {
-					// 	ComponentState activeState = activeEntry.getKey();
-					// 	SubstanceColorScheme scheme = getColorSchemeForState(
-					// 			table, ui, activeState);
-					// 	Color schemeFg = scheme.getForegroundColor();
-					// 	float contribution = activeEntry.getValue()
-					// 			.getContribution();
-					// 	aggrRed += schemeFg.getRed() * contribution;
-					// 	aggrGreen += schemeFg.getGreen() * contribution;
-					// 	aggrBlue += schemeFg.getBlue() * contribution;
-					// }
+					for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : modelStateInfo
+					 		.getStateContributionMap().entrySet()) {
+					 	ComponentState activeState = activeEntry.getKey();
+					 	SubstanceColorScheme scheme = getColorSchemeForState(
+					 			table, ui, activeState);
+					 	Color schemeFg = scheme.getForegroundColor();
+					 	float contribution = activeEntry.getValue()
+					 			.getContribution();
+					 	aggrRed += schemeFg.getRed() * contribution;
+					 	aggrGreen += schemeFg.getGreen() * contribution;
+					 	aggrBlue += schemeFg.getBlue() * contribution;
+					}
 					super.setForeground(new ColorUIResource(new Color(
 							(int) aggrRed, (int) aggrGreen, (int) aggrBlue)));
 				}
@@ -361,8 +361,8 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 
 		TableCellId cellFocusId = new TableCellId(row, column);
 
-		StateTransitionTracker focusStateTransitionTracker = null;//ui
-				//.getStateTransitionTracker(cellFocusId);
+		StateTransitionTracker focusStateTransitionTracker = ui
+				.getStateTransitionTracker(cellFocusId);
 
 		Insets regInsets = ui.getCellRendererInsets();
 		if (hasFocus || (focusStateTransitionTracker != null)) {
